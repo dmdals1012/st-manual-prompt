@@ -11,7 +11,7 @@ import os
 
 def get_huggingface_token():
     
-    token = os.eviron.get('HUGGINGFACE_API_TOKEN')
+    token = os.environ.get('HUGGINGFACE_API_TOKEN')
 
     if token is None:
         token = st.secrets.get('HUGGINGFACE_API_TOKEN')
