@@ -5,13 +5,17 @@ from llama_index.llms.huggingface_api import HuggingFaceInferenceAPI
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from huggingface_hub import snapshot_download
 from llama_index.core import Settings, StorageContext, load_index_from_storage
+import os
 
 
 
 def get_huggingface_token():
     
-    token = st.secrets.get('HUGGINGFACE_API_TOKEN')
-    return token
+    token = os.eviron.get('HUGGINGFACE_API_TOKEN')
+
+    if token is None:
+        token = st.secrets.get('HUGGINGFACE_API_TOKEN')
+        return token
 
 @st.cache_resource
 def initialize_models() :
@@ -45,8 +49,6 @@ def get_index_from_huggingface():
         local_dir=local_dir,
         repo_type='dataset',
         token = token
-
-
     )
 
     # 다운로드한 폴더를 메모리에 올린다.
@@ -72,11 +74,11 @@ def main():
     query_engine = index.as_query_engine()
 
     prompt= st.text_input('질문을 입력해 주세요 : ')
-    if prompt :
+    if prompt:
         with st.spinner('답변을 생성하고 있습니다...'):
-        response = query_engine.query(prompt)
-        st.text('답변 : ')
-        st.info(response.reponse)
+            response = query_engine.query(prompt)
+            st.text('답변 : ')
+            st.info(response.response)  
 
 if __name__=='__main__':
     main()
